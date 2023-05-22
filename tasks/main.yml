@@ -1,0 +1,52 @@
+---
+  - name: Install AX.25 packages
+    apt:
+      state: present
+      name:
+        - ax25-tools
+        - ax25-apps
+        - socat
+
+  - name: install systemd unit files
+    copy:
+      dest: "/etc/systemd/system/{{item}}"
+      src: "{{item}}"
+    register: unit_files
+    with_items:
+      - kiss-tnc@.service
+
+  - name: Create TNC instance configuration directories
+    file:
+      state: directory
+      path: "/etc/systemd/system/kiss-tnc@{{item}}.service.d"
+    with_items: "{{ax_25_ports}}"
+    when: ax_25_ports[item].type == 'kiss'
+
+  - name: Configure TNC instances
+    template:
+      src: kiss-tnc-override.j2
+      dest: "/etc/systemd/system/kiss-tnc@{{item}}.service.d/override.conf"
+    with_items: "{{ax_25_ports}}"
+    when: ax_25_ports[item].type == 'kiss'
+    register: unit_override_files
+
+  - name: reload systemd unit files if necessary
+    systemd:
+      daemon_reload: true
+    when: unit_files.changed or unit_override_files.changed
+
+  - name: Template AX.25 configuration files
+    template:
+      dest: "/etc/ax25/{{item}}"
+      src: "{{item}}.j2"
+    with_items:
+      - axports
+
+  - name: Start TNCs
+    systemd: 
+      name: "kiss-tnc@{{item}}.service"
+      state: started
+      enabled: true
+    with_items: "{{ax_25_ports}}"
+    when: ax_25_ports[item].type == 'kiss'
+    register: unit_override_files
