@@ -16,6 +16,7 @@
       - kiss-tnc@.service
       - mheardd.service
       - beacon@.service
+      - axlisten.service
 
   - name: Create TNC instance configuration directories
     file:
@@ -79,3 +80,4 @@
       enabled: true
     with_items:
      - mheardd
+     - axlisten

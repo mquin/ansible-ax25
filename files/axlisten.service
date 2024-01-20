@@ -1,0 +1,13 @@
+[Unit]
+Description=AX.25 traffic monitor
+After=network.target
+StartLimitInterval=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=5
+ExecStart=/usr/bin/axlisten -ra
+
+[Install]
+WantedBy=multi-user.target
