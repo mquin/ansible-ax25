@@ -14,6 +14,7 @@
     register: unit_files
     with_items:
       - kiss-tnc@.service
+      - mheardd.service
 
   - name: Create TNC instance configuration directories
     file:
@@ -50,3 +51,11 @@
     with_items: "{{ax_25_ports}}"
     when: ax_25_ports[item].type == 'kiss'
     register: unit_override_files
+
+  - name: Start and enable services
+    systemd:
+      name: "{{item}}"
+      state: started
+      enabled: true
+    with_items:
+     - mheardd
