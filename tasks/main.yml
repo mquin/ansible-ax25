@@ -18,6 +18,19 @@
       - beacon@.service
       - axlisten.service
 
+  - name: Create instance configuration directories for services that require them
+    file:
+      state: directory
+      path: "/etc/systemd/system/{{item}}.d"
+    with_items:
+      - mheardd.service
+
+  - name: configure mheardd
+    template:
+      src: "mheardd-override.conf.j2"
+      dest: "/etc/systemd/system/mheardd.service.d/override.conf"
+    register: unit_override_files
+
   - name: Create TNC instance configuration directories
     file:
       state: directory
