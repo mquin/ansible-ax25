@@ -15,6 +15,7 @@
     with_items:
       - kiss-tnc@.service
       - mheardd.service
+      - beacon@.service
 
   - name: Create TNC instance configuration directories
     file:
@@ -29,6 +30,19 @@
       dest: "/etc/systemd/system/kiss-tnc@{{item}}.service.d/override.conf"
     with_items: "{{ax_25_ports}}"
     when: ax_25_ports[item].type == 'kiss'
+    register: unit_override_files
+
+  - name: Create beacon instance configuration directories
+    file:
+      state: directory
+      path: "/etc/systemd/system/beacon@{{item}}.service.d"
+    with_items: "{{beacon_ports}}"
+
+  - name: Configure beacon instances
+    template:
+      src: beacon-override.j2
+      dest: "/etc/systemd/system/beacon@{{item}}.service.d/override.conf"
+    with_items: "{{beacon_ports}}"
     register: unit_override_files
 
   - name: reload systemd unit files if necessary
@@ -50,7 +64,13 @@
       enabled: true
     with_items: "{{ax_25_ports}}"
     when: ax_25_ports[item].type == 'kiss'
-    register: unit_override_files
+
+  - name: Start Beacons
+    systemd:
+      name: "beacon@{{item}}.service"
+      state: started
+      enabled: true
+    with_items: "{{beacon_ports}}"
 
   - name: Start and enable services
     systemd:
