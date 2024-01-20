@@ -1,5 +1,8 @@
 ---
 callsign: 'N0CALL'
+beacon_msg: 'Linux AX.25 Node'
+beacon_ports:
+  - tnc
 ax_25_ports:
   tnc:
     name: tnc
