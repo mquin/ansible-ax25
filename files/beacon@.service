@@ -2,7 +2,7 @@
 Description=AX25 ID Beacon %I
 
 [Service]
-ExecStart=/usr/sbin/beacon -c ${CALLSIGN} %i ${BEACON_MSG}
+ExecStart=/usr/sbin/beacon -d ID -c ${CALLSIGN} %i ${BEACON_MSG}
 TimeoutStopSec=5
 Restart=always
 RestartSec=5
