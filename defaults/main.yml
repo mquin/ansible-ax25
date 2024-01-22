@@ -24,3 +24,8 @@ nr_ports:
     alias: NCALL
     paclen: 236
     comment: "Linux Switch Port"
+ax25d_interfaces:
+  "[N0CALL-2 VIA tnc]":
+    interface: "[N0CALL-2 VIA tnc]"
+    callsigns:
+     - 'default  * * * * * *  - root  /usr/sbin/uronode uronode'

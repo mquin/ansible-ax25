@@ -71,6 +71,7 @@
       src: "{{item}}.j2"
     with_items:
       - axports
+      - ax25d.conf
 
   - name: Start TNCs
     systemd: 
@@ -95,3 +96,4 @@
     with_items:
      - mheardd
      - axlisten
+     - ax25d

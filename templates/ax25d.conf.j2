@@ -1,0 +1,7 @@
+# /etc/ax25/ax25d.conf
+{% for interface in ax25d_interfaces %}
+{{ ax25d_interfaces[interface].interface }}
+{% for callsign in ax25d_interfaces[interface].callsigns %}
+{{ callsign }}
+{% endfor %}
+{% endfor %}
