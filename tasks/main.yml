@@ -17,6 +17,7 @@
       - mheardd.service
       - beacon@.service
       - axlisten.service
+      - ax25d.service
 
   - name: Create instance configuration directories for services that require them
     file:

@@ -1,0 +1,13 @@
+[Unit]
+Description=AX.25 listener
+After=network.target
+StartLimitInterval=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=5
+ExecStart=/usr/sbin/ax25d
+
+[Install]
+WantedBy=multi-user.target
