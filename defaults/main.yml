@@ -1,4 +1,5 @@
 ---
+mheard_units: []
 callsign: 'N0CALL'
 beacon_msg: 'Linux AX.25 Node'
 beacon_ports:
